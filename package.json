@@ -1,37 +1,36 @@
 {
-  "name": "jasmine-tagged",
-  "version": "1.1.4",
-  "description": "Tag and filter jasmine specs",
+  "name": "@lumine-code/jasmine-tagged",
+  "version": "2.0.0",
+  "description": "Filters legacy Jasmine specs by inherited tags for Lumine test suites.",
   "main": "./lib/jasmine-tagged.js",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://github.com/atom/jasmine-tagged/raw/master/LICENSE.md"
-    }
+  "license": "MIT",
+  "repository": "https://github.com/lumine-code/jasmine-tagged",
+  "bugs": "https://github.com/lumine-code/jasmine-tagged/issues",
+  "homepage": "https://github.com/lumine-code/jasmine-tagged/",
+  "author": "lumine-code",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bin",
+    "lib"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/atom/jasmine-tagged.git"
-  },
-  "bugs": {
-    "url": "https://github.com/atom/jasmine-tagged/issues"
-  },
   "scripts": {
-    "prepublish": "grunt clean lint coffee",
-    "test": "grunt test"
+    "build": "coffee --compile --output lib src",
+    "pretest": "npm run build",
+    "test": "node node_modules/jasmine-focused/bin/jasmine-focused --captureExceptions --coffee spec/",
+    "prepare": "npm run build"
   },
   "bin": {
     "jasmine-tagged": "./bin/jasmine-tagged"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-coffee": "~0.9.0",
-    "grunt-cli": "~0.1.8",
-    "rimraf": "~2.1.4",
-    "grunt-coffeelint": "0.0.6",
-    "grunt-shell": "~0.2.2"
+    "coffeescript": "2.7.0"
   },
   "dependencies": {
-    "jasmine-focused": "^1.0.7"
+    "jasmine-focused": "https://github.com/lumine-code/jasmine-focused.git#5bb81cbfeafbd91f04b0981ca600cf94899d66b6"
   }
 }

@@ -1,39 +1,40 @@
-##### Atom and all repositories under Atom will be archived on December 15, 2022. Learn more in our [official announcement](https://github.blog/2022-06-08-sunsetting-atom/)
- # Jasmine Tagged [![Build Status](https://travis-ci.org/atom/jasmine-tagged.svg?branch=master)](https://travis-ci.org/atom/jasmine-tagged)
+# @lumine-code/jasmine-tagged
 
-Allows for tagging and filtering of specific
-[Jasmine](https://github.com/pivotal/jasmine) specs depending on the
-platform.
+Filters legacy Jasmine specs by inherited tags for Lumine test suites.
 
-## Installing
+## Features
+
+- **Inline tags**: recognizes `#tag` words in suite and spec descriptions.
+- **Inherited tags**: applies tags from parent suites to their nested specs.
+- **Selective runs**: includes only specs matching the configured tag list.
+- **Untagged control**: optionally includes or excludes specs without tags.
+- **Focused integration**: composes with the Lumine focused Jasmine runner.
+
+## Installation
 
 ```sh
-npm install jasmine-tagged
+npm install @lumine-code/jasmine-tagged
 ```
+
+## Usage
+
+```js
+require('@lumine-code/jasmine-tagged')
+
+const env = jasmine.getEnv()
+env.setIncludedTags(['windows'])
+env.includeSpecsWithoutTags(false)
+```
+
+Tags are written in descriptions, such as `describe('filesystem #windows', () => {})`.
 
 ## Building
-  * Clone the repository
-  * Run `npm install`
-  * Run `grunt` to compile the CoffeeScript
 
-## Using
-
-```coffeescript
-  describe "Javascript", ->
-    describe "on the #server", ->
-      it "can access files"
-    describe "on the #browser", ->
-      it "can access localstorage"
+```sh
+npm install
+npm test
 ```
 
-In jasmine-helper.js
+## Contributing
 
-```coffeescript
-require 'jasmine-tagged'
-
-jasmineEnv = jasmine.getEnv()
-jasmineEnv.setIncludedTags(["browser"])
-
-# By default untagged specs are run, uncomment to change that behavior
-# jasmineEnv.includeSpecsWithoutTags(false)
-```
+Got ideas to make this package better, found a bug, or want to help add new features? Just drop your thoughts on GitHub. Any feedback is welcome!
