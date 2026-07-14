@@ -21,14 +21,15 @@
   "scripts": {
     "build": "coffee --compile --output lib src",
     "pretest": "npm run build",
-    "test": "node node_modules/@lumine-code/jasmine-focused/bin/jasmine-focused --captureExceptions --coffee spec/",
+    "test": "jasmine",
     "prepare": "npm run build"
   },
   "bin": {
     "jasmine-tagged": "./bin/jasmine-tagged"
   },
   "devDependencies": {
-    "coffeescript": "2.7.0"
+    "coffeescript": "2.7.0",
+    "jasmine": "^6.3.0"
   },
   "dependencies": {
     "@lumine-code/jasmine-focused": "https://github.com/lumine-code/jasmine-focused.git#6d04426bcb107dc44b148a6d48172c918326c068"
