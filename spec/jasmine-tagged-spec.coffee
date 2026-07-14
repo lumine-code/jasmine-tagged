@@ -14,6 +14,10 @@ describe "jasmine-tagged", ->
     untaggedSpec =
       description: 'no tag'
 
+  afterEach ->
+    env.includeSpecsWithoutTags(true)
+    env.setIncludedTags([])
+
   describe "by default", ->
     it "runs untagged specs", ->
       expect(env.specFilter(untaggedSpec)).toBeTruthy()
@@ -25,18 +29,12 @@ describe "jasmine-tagged", ->
     beforeEach ->
       env.includeSpecsWithoutTags(false)
 
-    afterEach ->
-      env.includeSpecsWithoutTags(true)
-
     it "doesn't run untagged specs", ->
-      expect(env.specFilter(taggedSpec)).toBeFalsy()
+      expect(env.specFilter(untaggedSpec)).toBeFalsy()
 
   describe "with a specific tag specs", ->
     beforeEach ->
       env.setIncludedTags(['tag'])
-
-    afterEach ->
-      env.setIncludedTags([])
 
     it "run specs with a matching tag", ->
       expect(env.specFilter(taggedSpec)).toBeTruthy()
@@ -44,6 +42,11 @@ describe "jasmine-tagged", ->
 
     it "doesn't run specs with different tags", ->
       expect(env.specFilter(anotherTaggedSpec)).toBeFalsy()
+
+    it "runs specs matching any one of the included tags", ->
+      env.setIncludedTags(['missing-tag', 'another-tag'])
+      expect(env.specFilter(multiTaggedSpec)).toBeTruthy()
+      expect(env.specFilter(anotherTaggedSpec)).toBeTruthy()
 
   describe "with a nested spec", ->
     [nestedTaggedSpec, nestedAnotherTaggedSpec] = []
@@ -63,14 +66,25 @@ describe "jasmine-tagged", ->
       beforeEach ->
         env.setIncludedTags(['tag'])
 
-      afterEach ->
-        env.setIncludedTags([])
-
       it "run specs with a matching tag", ->
         expect(env.specFilter(nestedTaggedSpec)).toBeTruthy()
 
       it "doesn't run specs with different tags", ->
         expect(env.specFilter(nestedAnotherTaggedSpec)).toBeFalsy()
+
+    it "inherits tags through every ancestor suite", ->
+      rootSuite =
+        description: 'root #tag'
+      childSuite =
+        description: 'child suite'
+        parentSuite: rootSuite
+      deeplyNestedSpec =
+        description: 'nested spec'
+        parentSuite: childSuite
+
+      env.includeSpecsWithoutTags(false)
+      env.setIncludedTags(['tag'])
+      expect(env.specFilter(deeplyNestedSpec)).toBeTruthy()
 
   describe "with a tagged suite", ->
     [taggedSuiteSpec] = []
@@ -88,9 +102,18 @@ describe "jasmine-tagged", ->
         env.includeSpecsWithoutTags(false)
         env.setIncludedTags(['tag'])
 
-      afterEach ->
-        env.includeSpecsWithoutTags(true)
-        env.setIncludedTags([])
-
       it "run specs with a matching tag", ->
         expect(env.specFilter(taggedSuiteSpec)).toBeTruthy()
+
+  describe "tag parsing", ->
+    beforeEach ->
+      env.includeSpecsWithoutTags(false)
+      env.setIncludedTags(['tag'])
+
+    it "only treats whitespace-delimited words beginning with a hash as tags", ->
+      expect(env.specFilter(description: 'a #tag spec')).toBeTruthy()
+      expect(env.specFilter(description: 'a feature#tag spec')).toBeFalsy()
+
+    it "matches complete tag names", ->
+      expect(env.specFilter(description: '#tagged')).toBeFalsy()
+      expect(env.specFilter(description: '#tag')).toBeTruthy()
