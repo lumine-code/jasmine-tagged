@@ -28,6 +28,6 @@
     "jasmine": "^6.3.0"
   },
   "dependencies": {
-    "@lumine-code/jasmine-focused": "https://github.com/lumine-code/jasmine-focused.git#6d04426bcb107dc44b148a6d48172c918326c068"
+    "@lumine-code/jasmine-focused": "https://github.com/lumine-code/jasmine-focused.git#4277644b11d1be8fc5ef6625e657256bfb83ccdd"
   }
 }
