@@ -2,6 +2,9 @@
 
 Filters legacy Jasmine specs by inherited tags for Lumine test suites.
 
+> [!WARNING]
+> **This package is deprecated.** [Lumine](https://github.com/lumine-code/lumine) no longer depends on it — the test harness no longer filters specs by inherited tags. This repository is archived and no longer maintained.
+
 ## Features
 
 - **Inline tags**: recognizes `#tag` words in suite and spec descriptions.
